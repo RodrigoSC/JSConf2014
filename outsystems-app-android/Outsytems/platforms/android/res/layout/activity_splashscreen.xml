@@ -5,7 +5,8 @@
         android:id="@+id/image_view_splash_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_red" />
+        android:background="@color/jsconf_color" 
+       />
 
     <ImageView
         android:id="@+id/image_view_splash_icon"
