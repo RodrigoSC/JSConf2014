@@ -1,6 +1,0 @@
-INDEX VERSION 1.126+/Users/rsc/dev/JSConfTimetable/.metadata/.plugins/org.eclipse.jdt.core
-349681673.index
-928726826.index
-800186684.index
-1846535169.index
-1377251446.index
