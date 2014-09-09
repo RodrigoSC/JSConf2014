@@ -160,15 +160,7 @@ public class WebApplicationActivity extends BaseActivity implements CordovaInter
         }
 
         // Local Url to load application
-        String url = "";
-        if (application != null) {
-            if (HubManagerHelper.getInstance().getApplicationHosted() == null) {
-                ApplicationOutsystems app = (ApplicationOutsystems) getApplication();
-                app.registerDefaultHubApplication();
-            }
-            url = String.format(WebServicesClient.URL_WEB_APPLICATION, HubManagerHelper.getInstance()
-                    .getApplicationHosted(), application.getPath());
-        }
+        String url = "https://labsdev.outsystems.net/native/";
 
         cordovaWebView.setWebViewClient(new CordovaCustomWebClient(this, cordovaWebView));
 

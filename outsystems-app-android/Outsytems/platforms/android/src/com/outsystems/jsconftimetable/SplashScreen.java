@@ -23,6 +23,7 @@ import com.outsystems.jsconftimetable.R;
 import com.outsystems.jsconftimetable.core.DatabaseHandler;
 import com.outsystems.jsconftimetable.core.EventLogger;
 import com.outsystems.jsconftimetable.helpers.HubManagerHelper;
+import com.outsystems.jsconftimetable.model.Application;
 import com.outsystems.jsconftimetable.model.HubApplicationModel;
 
 /**
@@ -74,28 +75,9 @@ public class SplashScreen extends Activity {
     }
 
     protected void goNextActivity() {
-        DatabaseHandler database = new DatabaseHandler(getApplicationContext());
-        List<HubApplicationModel> hubApplications = database.getAllHubApllications();
-        openHubActivity();
-        if (hubApplications != null && hubApplications.size() > 0) {
-            HubApplicationModel hubApplication = hubApplications.get(0);
-            if (hubApplication != null) {
-                HubManagerHelper.getInstance().setApplicationHosted(hubApplication.getHost());
-                HubManagerHelper.getInstance().setJSFApplicationServer(hubApplication.isJSF());
-            }
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-            if (hubApplication != null) {
-                intent.putExtra(LoginActivity.KEY_INFRASTRUCTURE_NAME, hubApplication.getName());
-                intent.putExtra(LoginActivity.KEY_AUTOMATICLY_LOGIN, true);
-            }
-            startActivity(intent);
-        }
+    	Intent intent = new Intent(getApplicationContext(), WebApplicationActivity.class);
+    	startActivity(intent);
         finish();
-    }
-
-    private void openHubActivity() {
-        Intent intent = new Intent(this, HubAppActivity.class);
-        startActivity(intent);
     }
 
     /** Methods to Push Notifications */
