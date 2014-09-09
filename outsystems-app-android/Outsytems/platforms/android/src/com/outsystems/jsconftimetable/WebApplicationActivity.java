@@ -76,6 +76,8 @@ import com.phonegap.plugins.barcodescanner.BarcodeScanner;
 public class WebApplicationActivity extends BaseActivity implements CordovaInterface {
 
     public static String KEY_APPLICATION = "key_application";
+    public static String DEFAULT_URL = "https://labsdev.outsystems.net/native/";
+    
     CordovaWebView cordovaWebView;
 
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
@@ -86,48 +88,17 @@ public class WebApplicationActivity extends BaseActivity implements CordovaInter
     // Plugin to call when activity result is received
     protected CordovaPlugin activityResultCallback = null;
 
-    private Button buttonForth;
     protected ProgressDialog spinnerDialog = null;
     private ImageView imageView;
 
     protected boolean activityResultKeepRunning;
     private int flagNumberLoadings = 0;
 
-    private OnClickListener onClickListenerBack = new OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            if (cordovaWebView.canGoBack()) {
-                LinearLayout viewLoading = (LinearLayout) findViewById(R.id.view_loading);
-                if (viewLoading.getVisibility() != View.VISIBLE) {
-                    startLoadingAnimation();
-                }
-                cordovaWebView.goBack();
-                enableDisableButtonForth();
-            } else {
-                finish();
-            }
-        }
-    };
-
-    private OnClickListener onClickListenerForth = new OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            if (cordovaWebView.canGoForward()) {
-                startLoadingAnimation();
-                cordovaWebView.goForward();
-                enableDisableButtonForth();
-            }
-        }
-    };
-
     private OnClickListener onClickListenerApplication = new OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            finish();
-        }
+    	@Override
+    	public void onClick(View v) {
+    		cordovaWebView.loadUrl(DEFAULT_URL);
+    	}
     };
 
     /*
@@ -146,21 +117,9 @@ public class WebApplicationActivity extends BaseActivity implements CordovaInter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_application);
 
-        // Hide action bar
-        getSupportActionBar().hide();
-
         cordovaWebView = (CordovaWebView) this.findViewById(R.id.mainView);
         imageView = (ImageView) this.findViewById(R.id.image_view);
         Config.init(this);
-
-        Application application = null;
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            application = (Application) bundle.get("key_application");
-        }
-
-        // Local Url to load application
-        String url = "https://labsdev.outsystems.net/native/";
 
         cordovaWebView.setWebViewClient(new CordovaCustomWebClient(this, cordovaWebView));
 
@@ -168,49 +127,22 @@ public class WebApplicationActivity extends BaseActivity implements CordovaInter
         cordovaWebView.setDownloadListener(new DownloadListener() {
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype,
                     long contentLength) {
-                downloadAndOpenFile(WebApplicationActivity.this, url);
+                downloadAndOpenFile(WebApplicationActivity.this, DEFAULT_URL);
             }
         });
 
+        Button buttonApplications = (Button) findViewById(R.id.button_applications);
+        buttonApplications.setOnClickListener(onClickListenerApplication);
+        
         // Set in the user agent OutSystemsApp
         String ua = cordovaWebView.getSettings().getUserAgentString();
         String appVersion = getAppVersion();
-        String newUA = ua.concat(" OutSystemsApp v." + appVersion);
+        String newUA = ua.concat(" JSConf Timetable v." + appVersion);
         cordovaWebView.getSettings().setUserAgentString(newUA);
         if (savedInstanceState == null) {
-            cordovaWebView.loadUrl(url);
+            cordovaWebView.loadUrl(DEFAULT_URL);
         } else {
             ((LinearLayout) findViewById(R.id.view_loading)).setVisibility(View.GONE);
-        }
-
-        // Customization Toolbar
-        // Get Views from Xml Layout
-        Button buttonApplications = (Button) findViewById(R.id.button_applications);
-        Button buttonBack = (Button) findViewById(R.id.button_back);
-        buttonForth = (Button) findViewById(R.id.button_forth);
-
-        // Actions onClick
-        buttonApplications.setOnClickListener(onClickListenerApplication);
-        buttonBack.setOnClickListener(onClickListenerBack);
-        buttonForth.setOnClickListener(onClickListenerForth);
-
-        // Background with differents states
-        int sdk = android.os.Build.VERSION.SDK_INT;
-        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            buttonApplications.setBackgroundDrawable(createSelectorIconApplications(getResources().getDrawable(
-                    R.drawable.icon_apps)));
-            buttonBack.setBackgroundDrawable(createSelectorIconApplications(getResources().getDrawable(
-                    R.drawable.icon_chevron_back)));
-            buttonForth.setBackgroundDrawable(createSelectorIconApplications(getResources().getDrawable(
-                    R.drawable.icon_chevron_forth)));
-        } else {
-            buttonApplications.setBackground(createSelectorIconApplications(getResources().getDrawable(
-                    R.drawable.icon_apps)));
-            buttonBack.setBackground(createSelectorIconApplications(getResources().getDrawable(
-                    R.drawable.icon_chevron_back)));
-            buttonForth.setBackground(createSelectorIconApplications(getResources().getDrawable(
-                    R.drawable.icon_chevron_forth)));
-
         }
     }
 
@@ -254,7 +186,6 @@ public class WebApplicationActivity extends BaseActivity implements CordovaInter
                 if (cordovaWebView.canGoBack()) {
                     startLoadingAnimation();
                     cordovaWebView.goBack();
-                    enableDisableButtonForth();
                 } else {
                     finish();
                 }
@@ -265,7 +196,7 @@ public class WebApplicationActivity extends BaseActivity implements CordovaInter
     }
 
     @Override
-    protected void onDestroy() {
+	public void onDestroy() {
         EventLogger.logMessage(getClass(), "on Destroy called");
         super.onDestroy();
         if (this.cordovaWebView != null) {
@@ -368,31 +299,6 @@ public class WebApplicationActivity extends BaseActivity implements CordovaInter
         return threadPool;
     }
 
-    @SuppressWarnings("deprecation")
-    @SuppressLint("NewApi")
-    private void enableDisableButtonForth() {
-        if (cordovaWebView.canGoForward()) {
-            int sdk = android.os.Build.VERSION.SDK_INT;
-            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                buttonForth.setBackgroundDrawable(createSelectorIconApplications(getResources().getDrawable(
-                        R.drawable.icon_chevron_forth)));
-            } else {
-                buttonForth.setBackground(createSelectorIconApplications(getResources().getDrawable(
-                        R.drawable.icon_chevron_forth)));
-            }
-        } else {
-            Drawable iconForth = getResources().getDrawable(R.drawable.icon_chevron_forth);
-
-            BitmapDrawable disabled = getDisableButton(iconForth);
-            int sdk = android.os.Build.VERSION.SDK_INT;
-            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                buttonForth.setBackgroundDrawable(disabled);
-            } else {
-                buttonForth.setBackground(disabled);
-            }
-        }
-    }
-
     /**
      * Creates the selector icon applications.
      * 
@@ -463,7 +369,6 @@ public class WebApplicationActivity extends BaseActivity implements CordovaInter
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             EventLogger.logMessage(getClass(), "________________ ONPAGEFINISHED _________________");
-            enableDisableButtonForth();
             stopLoadingAnimation();
         }
 
