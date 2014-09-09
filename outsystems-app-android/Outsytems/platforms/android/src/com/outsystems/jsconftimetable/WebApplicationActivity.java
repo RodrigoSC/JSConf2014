@@ -94,7 +94,7 @@ public class WebApplicationActivity extends BaseActivity implements CordovaInter
     protected boolean activityResultKeepRunning;
     private int flagNumberLoadings = 0;
 
-    private OnClickListener onClickListenerApplication = new OnClickListener() {
+    private OnClickListener onClickListenerHome = new OnClickListener() {
     	@Override
     	public void onClick(View v) {
     		cordovaWebView.loadUrl(DEFAULT_URL);
@@ -131,8 +131,8 @@ public class WebApplicationActivity extends BaseActivity implements CordovaInter
             }
         });
 
-        Button buttonApplications = (Button) findViewById(R.id.button_applications);
-        buttonApplications.setOnClickListener(onClickListenerApplication);
+        Button buttonHome = (Button) findViewById(R.id.button_home);
+        buttonHome.setOnClickListener(onClickListenerHome);
         
         // Set in the user agent OutSystemsApp
         String ua = cordovaWebView.getSettings().getUserAgentString();
