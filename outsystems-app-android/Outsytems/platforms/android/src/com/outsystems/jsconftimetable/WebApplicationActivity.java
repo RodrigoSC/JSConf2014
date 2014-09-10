@@ -66,17 +66,11 @@ import com.outsystems.jsconftimetable.helpers.HubManagerHelper;
 import com.outsystems.jsconftimetable.model.Application;
 import com.phonegap.plugins.barcodescanner.BarcodeScanner;
 
-/**
- * Class description.
- * 
- * @author <a href="mailto:vmfo@xpand-it.com">vmfo</a>
- * @version $Revision: 666 $
- * 
- */
 public class WebApplicationActivity extends BaseActivity implements CordovaInterface {
 
     public static String KEY_APPLICATION = "key_application";
-    public static String DEFAULT_URL = "https://labsdev.outsystems.net/native/";
+    public static String DEFAULT_URL = "https://mkt.outsystems.net/JSConfTimeTable/Home.aspx";
+    public static String INFO_URL = "https://mkt.outsystems.net/JSConfTimeTable/About.aspx";
     
     CordovaWebView cordovaWebView;
 
@@ -93,13 +87,6 @@ public class WebApplicationActivity extends BaseActivity implements CordovaInter
 
     protected boolean activityResultKeepRunning;
     private int flagNumberLoadings = 0;
-
-    private OnClickListener onClickListenerHome = new OnClickListener() {
-    	@Override
-    	public void onClick(View v) {
-    		cordovaWebView.loadUrl(DEFAULT_URL);
-    	}
-    };
 
     /*
      * The variables below are used to cache some of the activity properties.
@@ -131,8 +118,19 @@ public class WebApplicationActivity extends BaseActivity implements CordovaInter
             }
         });
 
-        Button buttonHome = (Button) findViewById(R.id.button_home);
-        buttonHome.setOnClickListener(onClickListenerHome);
+        ((Button) findViewById(R.id.button_home)).setOnClickListener(new OnClickListener() {
+        	@Override
+        	public void onClick(View v) {
+        		cordovaWebView.loadUrl(DEFAULT_URL);
+        	}
+        });
+        
+        ((Button) findViewById(R.id.button_info)).setOnClickListener(new OnClickListener() {
+        	@Override
+        	public void onClick(View v) {
+        		cordovaWebView.loadUrl(INFO_URL);
+        	}
+        });
         
         // Set in the user agent OutSystemsApp
         String ua = cordovaWebView.getSettings().getUserAgentString();

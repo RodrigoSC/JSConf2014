@@ -1,13 +1,6 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
     {
-        "file": "plugins/nl.x-services.plugins.calendar/www/Calendar.js",
-        "id": "nl.x-services.plugins.calendar.Calendar",
-        "clobbers": [
-            "Calendar"
-        ]
-    },
-    {
         "file": "plugins/org.apache.cordova.device/www/device.js",
         "id": "org.apache.cordova.device.device",
         "clobbers": [
@@ -19,62 +12,6 @@ module.exports = [
         "id": "com.phonegap.plugins.barcodescanner.BarcodeScanner",
         "clobbers": [
             "cordova.plugins.barcodeScanner"
-        ]
-    },
-    {
-        "file": "plugins/org.apache.cordova.contacts/www/contacts.js",
-        "id": "org.apache.cordova.contacts.contacts",
-        "clobbers": [
-            "navigator.contacts"
-        ]
-    },
-    {
-        "file": "plugins/org.apache.cordova.contacts/www/Contact.js",
-        "id": "org.apache.cordova.contacts.Contact",
-        "clobbers": [
-            "Contact"
-        ]
-    },
-    {
-        "file": "plugins/org.apache.cordova.contacts/www/ContactAddress.js",
-        "id": "org.apache.cordova.contacts.ContactAddress",
-        "clobbers": [
-            "ContactAddress"
-        ]
-    },
-    {
-        "file": "plugins/org.apache.cordova.contacts/www/ContactError.js",
-        "id": "org.apache.cordova.contacts.ContactError",
-        "clobbers": [
-            "ContactError"
-        ]
-    },
-    {
-        "file": "plugins/org.apache.cordova.contacts/www/ContactField.js",
-        "id": "org.apache.cordova.contacts.ContactField",
-        "clobbers": [
-            "ContactField"
-        ]
-    },
-    {
-        "file": "plugins/org.apache.cordova.contacts/www/ContactFindOptions.js",
-        "id": "org.apache.cordova.contacts.ContactFindOptions",
-        "clobbers": [
-            "ContactFindOptions"
-        ]
-    },
-    {
-        "file": "plugins/org.apache.cordova.contacts/www/ContactName.js",
-        "id": "org.apache.cordova.contacts.ContactName",
-        "clobbers": [
-            "ContactName"
-        ]
-    },
-    {
-        "file": "plugins/org.apache.cordova.contacts/www/ContactOrganization.js",
-        "id": "org.apache.cordova.contacts.ContactOrganization",
-        "clobbers": [
-            "ContactOrganization"
         ]
     },
     {
@@ -259,11 +196,9 @@ module.exports = [
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "nl.x-services.plugins.calendar": "4.2.4",
     "org.apache.cordova.device": "0.2.11-dev",
     "com.phonegap.plugins.barcodescanner": "1.0.1",
     "org.apache.cordova.console": "0.2.7",
-    "org.apache.cordova.contacts": "0.2.9",
     "org.apache.cordova.dialogs": "0.2.6",
     "org.apache.cordova.geolocation": "0.3.6",
     "org.apache.cordova.battery-status": "0.2.7",
