@@ -69,8 +69,8 @@ import com.phonegap.plugins.barcodescanner.BarcodeScanner;
 public class WebApplicationActivity extends BaseActivity implements CordovaInterface {
 
     public static String KEY_APPLICATION = "key_application";
-    public static String DEFAULT_URL = "https://mkt.outsystems.net/JSConfTimeTable/Home.aspx";
-    public static String INFO_URL = "https://mkt.outsystems.net/JSConfTimeTable/About.aspx";
+    public static String DEFAULT_URL = "https://labs.outsystems.net/JSConfTimeTable/Home.aspx";
+    public static String INFO_URL = "https://labs.outsystems.net/JSConfTimeTable/About.aspx";
     
     CordovaWebView cordovaWebView;
 
@@ -121,6 +121,7 @@ public class WebApplicationActivity extends BaseActivity implements CordovaInter
         ((Button) findViewById(R.id.button_home)).setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
+        		startLoadingAnimation();
         		cordovaWebView.loadUrl(DEFAULT_URL);
         	}
         });
@@ -128,6 +129,7 @@ public class WebApplicationActivity extends BaseActivity implements CordovaInter
         ((Button) findViewById(R.id.button_info)).setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
+        		startLoadingAnimation();
         		cordovaWebView.loadUrl(INFO_URL);
         	}
         });
@@ -138,7 +140,8 @@ public class WebApplicationActivity extends BaseActivity implements CordovaInter
         String newUA = ua.concat(" JSConf Timetable v." + appVersion);
         cordovaWebView.getSettings().setUserAgentString(newUA);
         if (savedInstanceState == null) {
-            cordovaWebView.loadUrl(DEFAULT_URL);
+        	spinnerStart();
+        	cordovaWebView.loadUrl(DEFAULT_URL);
         } else {
             ((LinearLayout) findViewById(R.id.view_loading)).setVisibility(View.GONE);
         }
@@ -389,16 +392,23 @@ public class WebApplicationActivity extends BaseActivity implements CordovaInter
 
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            super.onReceivedError(view, errorCode, description, failingUrl);
-            EventLogger.logMessage(getClass(), "________________ ONRECEIVEDERROR _________________");
+        	cordovaWebView.loadUrl("file:///android_asset/www/error.html");
+        	spinnerStop();
+            //super.onReceivedError(view, errorCode, description, failingUrl);
+           /* EventLogger.logMessage(getClass(), "________________ ONRECEIVEDERROR _________________");
             ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting()) {
-                spinnerStop();
-            } else {
-                cordovaWebView.setVisibility(View.INVISIBLE);
-                imageView.setVisibility(View.VISIBLE);
-                imageView.setBackgroundColor(getResources().getColor(R.color.white_color));
-            }
+            try {
+	            if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting()) {
+	                spinnerStop();
+	            } else {
+	                cordovaWebView.setVisibility(View.INVISIBLE);
+	                imageView.setVisibility(View.VISIBLE);
+	                imageView.setBackgroundColor(getResources().getColor(R.color.white_color));
+	            }
+	        } catch(SecurityException e) {
+	            spinnerStop();
+            }*/
+            
         }
     }
 
